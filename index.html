@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Handbook 导航地图 · GitHub 仓库图谱</title>
+<meta name="description" content="GitHub 上 AI / LLM / Agent handbook 仓库的分层导航地图：官方出品、社区体系、工程推理、安全、具身语音、求职面试。" />
+<style>
+  :root{
+    --paper:#ffffff;
+    --surface:#ffffff;
+    --surface-sunk:#f6f6f4;
+    --line:#e7e7e5;
+    --line-strong:#d4d4d1;
+    --ink:#1d1d1b;
+    --ink-2:#5c5b55;
+    --ink-3:#8a887f;
+    --accent:#1f6b5a;
+    --accent-soft:#e3efea;
+    --key:#9a5a08;
+    --key-soft:#f6ecdc;
+    --danger:#b3261e;
+    --radius-sm:4px;
+    --radius-md:8px;
+    --radius-lg:12px;
+    --radius-pill:999px;
+    --shadow-pop:0 8px 24px rgba(20,20,18,.08);
+    --font-sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    --font-serif:"Noto Serif SC","Songti SC","Source Han Serif SC",Georgia,serif;
+    --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink)}
+  body{
+    font-family:var(--font-sans);font-size:15px;line-height:24px;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      linear-gradient(rgba(29,29,27,.028) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(29,29,27,.028) 1px,transparent 1px);
+    background-size:32px 32px;
+  }
+  a{color:inherit}
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+
+  /* ---------- header ---------- */
+  .top{
+    position:sticky;top:0;z-index:30;
+    background:rgba(255,255,255,.9);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .top-in{
+    max-width:1440px;margin:0 auto;padding:12px 24px;
+    display:flex;align-items:center;gap:16px;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .brand .mark{
+    width:26px;height:26px;border:1.5px solid var(--ink);border-radius:6px;
+    display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;font-weight:600;
+  }
+  .brand b{font-family:var(--font-serif);font-size:15px;letter-spacing:.2px;white-space:nowrap}
+  .brand span{color:var(--ink-3);font-size:11px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+  .search{
+    display:flex;align-items:center;gap:8px;border:1px solid var(--line-strong);
+    border-radius:var(--radius-pill);padding:7px 12px;background:var(--surface);min-width:260px;
+  }
+  .search input{
+    border:0;outline:0;background:transparent;font:inherit;font-size:13px;width:100%;color:var(--ink);
+  }
+  .search input::placeholder{color:var(--ink-3)}
+  .search kbd{
+    font-family:var(--font-mono);font-size:10px;color:var(--ink-3);
+    border:1px solid var(--line);border-radius:4px;padding:1px 5px;
+  }
+
+  /* ---------- hero ---------- */
+  .wrap{max-width:1440px;margin:0 auto;padding:0 24px 72px}
+  .hero{padding:40px 0 24px;max-width:860px}
+  .eyebrow{
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .eyebrow::before{content:"";width:24px;height:1px;background:var(--line-strong)}
+  h1{
+    font-family:var(--font-serif);font-weight:600;letter-spacing:.5px;
+    font-size:clamp(28px,4vw,42px);line-height:1.25;margin:0 0 12px;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+  .lede{color:var(--ink-2);font-size:15px;margin:0;max-width:640px}
+  .lede b{color:var(--ink);font-weight:600}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:var(--radius-md);
+    overflow:hidden;margin:24px 0 20px;
+  }
+  .stat{background:var(--surface);padding:14px 16px}
+  .stat .k{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+  .stat .v{font-family:var(--font-mono);font-size:22px;line-height:1.3;margin-top:2px}
+  .stat .v small{font-size:11px;color:var(--ink-3);margin-left:4px}
+
+  /* ---------- routes ---------- */
+  .routes{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 18px}
+  .routes .lab{font-size:12px;color:var(--ink-3);margin-right:2px}
+  .chip{
+    border:1px solid var(--line-strong);border-radius:var(--radius-pill);
+    padding:5px 12px;font-size:13px;color:var(--ink-2);background:var(--surface);
+    transition:.15s ease;white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--ink-3);color:var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+
+  /* ---------- layout ---------- */
+  .stage{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:28px;align-items:start}
+
+  /* ---------- map ---------- */
+  .map{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+  .band{
+    display:grid;grid-template-columns:184px minmax(0,1fr);gap:20px;
+    padding:22px 0;border-bottom:1px solid var(--line);position:relative;
+  }
+  .band-rail{padding-top:2px}
+  .band-no{font-family:var(--font-mono);font-size:11px;color:var(--ink-3);letter-spacing:.14em}
+  .band-title{font-family:var(--font-serif);font-size:17px;font-weight:600;margin:2px 0 6px}
+  .band-desc{font-size:12px;line-height:20px;color:var(--ink-3);max-width:170px}
+  .band-count{
+    margin-top:10px;display:inline-block;font-family:var(--font-mono);font-size:10px;
+    letter-spacing:.1em;color:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius-pill);
+    padding:1px 8px;
+  }
+  .nodes{display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start}
+
+  /* ---------- node ---------- */
+  .node{
+    position:relative;text-align:left;width:214px;
+    border:1px solid var(--line);border-radius:var(--radius-md);
+    background:var(--surface);padding:10px 12px 9px;
+    transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease,opacity .16s ease;
+  }
+  .node:hover{border-color:var(--accent);box-shadow:var(--shadow-pop);transform:translateY(-1px)}
+  .node[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset,var(--shadow-pop)}
+  .node .row1{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+  .node .idx{font-family:var(--font-mono);font-size:10px;color:var(--ink-3)}
+  .node .name{
+    font-size:13.5px;font-weight:600;line-height:20px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;
+  }
+  .node .meta{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--ink-3)}
+  .node .stars{color:var(--ink-2)}
+  .dot{width:6px;height:6px;border-radius:50%;display:inline-block;flex:none}
+  .dot.active{background:var(--accent)}
+  .dot.slow{background:var(--key)}
+  .dot.stale{background:#a3a29b}
+  .dot.caution{background:var(--danger)}
+  .badge{
+    font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+    padding:0 5px;border-radius:3px;line-height:15px;flex:none;
+  }
+  .badge.official{background:var(--accent-soft);color:var(--accent)}
+  .badge.route{background:var(--key-soft);color:var(--key)}
+
+  .dim{opacity:.16;pointer-events:none;filter:grayscale(1)}
+  .route-on{border-color:var(--key);box-shadow:0 0 0 1px var(--key) inset}
+
+  /* ---------- panel ---------- */
+  .panel{position:sticky;top:76px}
+  .card{
+    border:1px solid var(--line-strong);border-radius:var(--radius-lg);
+    background:var(--surface);overflow:hidden;
+  }
+  .card-head{padding:16px 18px 12px;border-bottom:1px solid var(--line)}
+  .card-head .kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .card-head h2{font-family:var(--font-serif);font-size:19px;line-height:1.35;margin:6px 0 2px;font-weight:600;word-break:break-word}
+  .card-head .owner{font-family:var(--font-mono);font-size:11px;color:var(--ink-3)}
+  .kv{display:grid;grid-template-columns:78px 1fr;gap:8px 12px;padding:14px 18px;border-bottom:1px solid var(--line);font-size:12.5px}
+  .kv dt{color:var(--ink-3);font-size:12px}
+  .kv dd{margin:0;font-family:var(--font-mono);font-size:12px}
+  .tagline{padding:14px 18px;font-size:13.5px;line-height:22px;color:var(--ink-2);border-bottom:1px solid var(--line)}
+  .note{padding:12px 18px;font-size:12.5px;line-height:20px;color:var(--key);background:var(--key-soft)}
+  .note.hidden{display:none}
+  .card-foot{padding:14px 18px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+  .go{
+    display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;
+    border-radius:var(--radius-sm);padding:7px 12px;font-size:13px;text-decoration:none;font-weight:500;
+  }
+  .go:hover{background:#175347}
+  .copy{font-family:var(--font-mono);font-size:11px;color:var(--ink-3);border:1px solid var(--line);border-radius:var(--radius-sm);padding:6px 10px}
+  .copy:hover{border-color:var(--ink-3);color:var(--ink)}
+
+  .legend{padding:16px 18px}
+  .legend h3{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px;font-weight:500}
+  .legend ul{list-style:none;margin:0;padding:0;display:grid;gap:7px;font-size:12.5px;color:var(--ink-2)}
+  .legend li{display:flex;align-items:center;gap:8px}
+  .hint{padding:14px 18px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);line-height:19px}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);margin-top:8px;padding:20px 0 0;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;font-size:12px;color:var(--ink-3)}
+  footer .mono{font-size:11px}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:1080px){
+    .stage{grid-template-columns:minmax(0,1fr)}
+    .panel{position:static}
+    .band{grid-template-columns:150px minmax(0,1fr);gap:14px}
+  }
+  @media (max-width:680px){
+    .top-in{padding:10px 16px;flex-wrap:wrap}
+    .search{min-width:0;flex:1}
+    .wrap{padding:0 16px 56px}
+    .hero{padding:28px 0 18px}
+    .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .band{grid-template-columns:minmax(0,1fr);gap:10px;padding:18px 0}
+    .band-desc{max-width:none}
+    .node{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="mark">AI</div>
+      <div>
+        <b>AI Handbook 导航地图</b><br />
+        <span>Repository Atlas · 2026-11</span>
+      </div>
+    </div>
+    <label class="search">
+      <span class="mono" style="font-size:11px;color:var(--ink-3)">/</span>
+      <input id="q" type="search" placeholder="搜索仓库、主题或关键词…" autocomplete="off" />
+      <kbd>/</kbd>
+    </label>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">GitHub · Handbook &amp; Playbook</div>
+    <h1>把散落的 <em>AI 手册</em><br />画成一张可走的地图</h1>
+    <p class="lede">
+      这不是又一个 awesome 列表。按<strong>权威性</strong>与<strong>用途</strong>分层：官方出品的实践手册在最上层，社区体系化教程在下层，工程推理、安全、具身、求职各自成区。点击任意节点查看定位、活跃度与原始仓库。
+    </p>
+    <div class="stats" id="stats"></div>
+    <div class="routes" id="routes">
+      <span class="lab">推荐路线</span>
+    </div>
+  </section>
+
+  <div class="stage">
+    <section class="map" id="map" aria-label="仓库导航地图"></section>
+
+    <aside class="panel">
+      <div class="card" id="card">
+        <div class="card-head">
+          <div class="kicker" id="card-kicker">Select a node</div>
+          <h2 id="card-title">点击左侧任意节点</h2>
+          <div class="owner" id="card-owner">查看仓库定位与维护状态</div>
+        </div>
+        <dl class="kv" id="card-kv" style="display:none"></dl>
+        <div class="tagline" id="card-tagline">地图只收录名称、描述或主题中包含 handbook 及其变体（LLM / Agent / ML / Infra / Inference 等）的项目，并剔除空壳与无关仓库。</div>
+        <div class="note hidden" id="card-note"></div>
+        <div class="card-foot" id="card-foot" style="display:none">
+          <a class="go" id="card-link" href="#" target="_blank" rel="noopener">在 GitHub 打开 <span aria-hidden="true">↗</span></a>
+          <button class="copy" id="card-copy" type="button">复制全名</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="legend">
+          <h3>图例 · 维护状态</h3>
+          <ul>
+            <li><span class="dot active"></span> 维护中：近 3 个月有推送</li>
+            <li><span class="dot slow"></span> 放缓：3–12 个月未更新</li>
+            <li><span class="dot stale"></span> 停更：超过 12 个月或明确归档</li>
+            <li><span class="dot caution"></span> 谨慎：一次性生成 / 质量待验证</li>
+          </ul>
+        </div>
+        <div class="hint">
+          星标与推送时间为 <span class="mono">2026-11-23</span> 的 API 快照，会持续变化；判断一个手册是否值得读，先看它是否还在更新，再看结构是否成体系。
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <div>数据来源：GitHub Search API（<span class="mono">handbook in:name</span> 全量 + 主题变体检索）· 逐个仓库 API 校验</div>
+    <div class="mono">SNAPSHOT 2026-11-23 · 34 REPOS</div>
+  </footer>
+</main>
+
+<script>
+const BANDS = [
+  { id:"official", no:"01", title:"官方 / 机构出品", desc:"出版社、云厂商、框架团队写的第一手实践，权威性最高。", official:true },
+  { id:"community", no:"02", title:"社区体系化教程", desc:"个人或社区维护的成体系学习路径，质量差异大，看更新频率。" },
+  { id:"engine", no:"03", title:"工程 · 推理 · Infra", desc:"从模型原理到推理引擎、容量规划与算子优化。" },
+  { id:"security", no:"04", title:"安全 · 红队", desc:"提示注入、越狱、Agent 攻击面与防御体系。" },
+  { id:"embodied", no:"05", title:"具身 · 语音", desc:"VLA、世界模型、实时语音 Agent 的专门手册。" },
+  { id:"career", no:"06", title:"求职 · 面试", desc:"AI Engineer / FDE / 大模型算法岗的面试准备。" }
+];
+
+const REPOS = [
+  { id:"huggingface/alignment-handbook", f:"huggingface/alignment-handbook", s:5720, d:"2026-09-23", l:"Apache-2.0", st:"active", band:"official",
+    t:"Hugging Face 官方模型对齐手册：SFT / DPO / ORPO 配方与 TRL 可复现代码。",
+    n:"" },
+  { id:"PacktPublishing/LLM-Engineers-Handbook", f:"PacktPublishing/LLM-Engineers-Handbook", s:5438, d:"2026-04-22", l:"MIT", st:"slow", band:"official",
+    t:"《LLM Engineer's Handbook》配套代码：从原理到 RAG，再到部署到 AWS 的完整 LLMOps 链路。",
+    n:"书籍配套仓库，随书更新，节奏自然放缓。" },
+  { id:"aliyun/ai-agent-handbook", f:"aliyun/ai-agent-handbook", s:3584, d:"2026-11-22", l:"Apache-2.0", st:"active", band:"official",
+    t:"阿里云官方企业级 Agent 手册：架构、构建、运行、治理、调优的全生命周期实践，每周收录新案例。",
+    n:"" },
+  { id:"huggingface/llm_training_handbook", f:"huggingface/llm_training_handbook", s:569, d:"2026-11-19", l:"—", st:"active", band:"official",
+    t:"Hugging Face 官方 LLM 训练方法论合集，偏预训练与微调的工程实践。", n:"" },
+  { id:"modular/llm-inference-handbook", f:"modular/llm-inference-handbook", s:491, d:"2026-11-20", l:"Apache-2.0", st:"active", band:"official",
+    t:"Modular（Mojo 团队）官方 LLM 推理知识库，覆盖推理基础设施与优化。", n:"" },
+  { id:"danielmeppiel/agentic-sdlc-handbook", f:"danielmeppiel/agentic-sdlc-handbook", s:176, d:"2026-06-16", l:"—", st:"slow", band:"official",
+    t:"微软 GBB 作者撰写的 agentic SDLC 书：15 章 225 页，分高管与实践者双视角。",
+    n:"书籍型仓库，内容完成后更新频率低。" },
+  { id:"PacktPublishing/The-Machine-Learning-Solutions-Architect-Handbook", f:"PacktPublishing/The-Machine-Learning-Solutions-Architect-Handbook", s:151, d:"2026-11-17", l:"MIT", st:"active", band:"official",
+    t:"Packt 书配套代码：以 ML 方案架构师视角走需求、架构到落地。", n:"" },
+  { id:"tweag/agentic-coding-handbook", f:"tweag/agentic-coding-handbook", s:38, d:"2026-10-28", l:"MIT", st:"active", band:"official",
+    t:"工程咨询公司 Tweag 的 agentic coding 手册，偏团队落地与工程约束。", n:"" },
+  { id:"aisingapore/ai-practitioner-handbook", f:"aisingapore/ai-practitioner-handbook", s:34, d:"2023-04-29", l:"—", st:"stale", band:"official",
+    t:"新加坡 AI Singapore 的 AI 实践手册，方法论扎实但已多年未更新。",
+    n:"停更超过 3 年，适合看方法论，不建议作为当前工程参考。" },
+
+  { id:"SylphAI-Inc/LLM-engineer-handbook", f:"SylphAI-Inc/LLM-engineer-handbook", s:5064, d:"2025-08-18", l:"MIT", st:"stale", band:"community",
+    t:"精选 LLM 资源清单，覆盖训练、服务、微调与应用构建，社区影响力大。",
+    n:"已停更一年以上，链接仍有价值，但工具与论文部分会过时。" },
+  { id:"undefined-ui/second-brain-os", f:"undefined-ui/second-brain-os", s:1595, d:"2026-11-03", l:"MIT", st:"active", band:"community",
+    t:"AI 工程师体系课：Agent 七模块 + 五本分层 handbook（知识图谱 / loops / gates / harness / evals）。", n:"" },
+  { id:"DataExpert-io/ai-engineer-handbook", f:"DataExpert-io/ai-engineer-handbook", s:1261, d:"2026-11-20", l:"—", st:"active", band:"community",
+    t:"AI 领域值得追的链接、书与作者清单，轻量导航型，适合建立信息源。", n:"" },
+  { id:"handbook-academy/engineering-handbook", f:"handbook-academy/engineering-handbook", s:943, d:"2026-10-26", l:"CC BY-SA 4.0", st:"active", band:"community",
+    t:"开源工程书合集，含独立的 AI Engineering Handbook，另附系统设计与 DSA。", n:"" },
+  { id:"swirl-ai/ai-angineers-handbook", f:"swirl-ai/ai-angineers-handbook", s:702, d:"2026-11-18", l:"Apache-2.0", st:"active", band:"community",
+    t:"AI Engineering 资源与从零构建 Agent 的代码，偏课程配套（仓库名 angineers 为拼写笔误）。", n:"" },
+  { id:"keyuchen21/agentic-engineering-handbook", f:"keyuchen21/agentic-engineering-handbook", s:596, d:"2026-11-15", l:"MIT", st:"active", band:"community",
+    t:"面向生产的 Agent 学习路线：OpenAI / Claude、MCP、Harness、Evals 与生产系统。", n:"" },
+  { id:"oxbshw/LLM-Agents-Ecosystem-Handbook", f:"oxbshw/LLM-Agents-Ecosystem-Handbook", s:561, d:"2026-06-30", l:"MIT", st:"slow", band:"community",
+    t:"60+ 骨架代码的 Agent 生态手册，覆盖 RAG、记忆、MCP 与语音。",
+    n:"近半年未更新，适合当代码素材库而非最新选型依据。" },
+  { id:"Prompthon-IO/agent-systems-handbook", f:"Prompthon-IO/agent-systems-handbook", s:315, d:"2026-11-18", l:"NOASSERTION", st:"active", band:"community",
+    t:"生产级 Agent 系统工程手册：LangGraph、MCP/A2A、上下文工程、记忆、评测与可观测性。", n:"" },
+  { id:"genai-handbook/genai-handbook.github.io", f:"genai-handbook/genai-handbook.github.io", s:311, d:"2026-02-02", l:"—", st:"slow", band:"community",
+    t:"生成式 AI 学习资源路线图，适合入门建立全局认知。", n:"近 9 个月未更新，路线图类内容时效性尚可。" },
+  { id:"nageoffer/ai-handbook", f:"nageoffer/ai-handbook", s:186, d:"2026-07-28", l:"Apache-2.0", st:"slow", band:"community",
+    t:"中文「程序员转型 AI 工程师」全栈手册：基础到 RAG、Agent 实战，附高频面试题。", n:"" },
+
+  { id:"Allen-C-Guan/AI-Infra-Handbook", f:"Allen-C-Guan/AI-Infra-Handbook", s:172, d:"2026-11-16", l:"—", st:"active", band:"engine",
+    t:"中文 AI Infra 系列书：模型原理 → 推理与 vLLM → AI 编译器，强调把论文、源码与现象连成一条线。", n:"" },
+  { id:"shtjww/llm-inference-capacity-handbook", f:"shtjww/llm-inference-capacity-handbook", s:186, d:"2026-09-20", l:"NOASSERTION", st:"active", band:"engine",
+    t:"推理容量规划案头手册：给定 GPU 算力，一个模型能扛多少 QPS——三层模型、三面墙、排队论与开环压测。", n:"" },
+  { id:"vasilyevdm/ai-agent-handbook", f:"vasilyevdm/ai-agent-handbook", s:155, d:"2026-03-20", l:"MIT", st:"slow", band:"engine",
+    t:"读 30+ Agent 框架源码提炼的实现模式：上下文腐化、压缩、提示词装配、记忆与工具治理。",
+    n:"单次发布后未再更新，内容为源码研读，仍需自行验证版本。" },
+  { id:"TensorTonic/llm-optimization-handbook", f:"TensorTonic/llm-optimization-handbook", s:100, d:"2026-11-10", l:"MIT", st:"active", band:"engine",
+    t:"把 LLM 做快做小：量化、KV cache、投机解码、GPU kernel 与 serving，带动手习题。", n:"" },
+  { id:"Xwh630/ai-agent-handbook", f:"Xwh630/ai-agent-handbook", s:78, d:"2026-11-20", l:"MIT", st:"active", band:"engine",
+    t:"31 章中文手册 + agent-handbook doctor CLI：给任意 Agent 项目做任务边界、上下文、状态、恢复、权限的能力体检。", n:"" },
+  { id:"sunxiaohui2025/AI-Infra-Handbook", f:"sunxiaohui2025/AI-Infra-Handbook", s:51, d:"2026-11-22", l:"—", st:"active", band:"engine",
+    t:"153 讲交互式课程 + 150 个交互组件：从矩阵乘法到分布式推理，附手写迷你推理引擎与从零实现的 GPT（1342 页 PDF）。", n:"" },
+  { id:"h9-tec/LLM-Math-Handbook", f:"h9-tec/LLM-Math-Handbook", s:242, d:"2026-04-26", l:"—", st:"caution", band:"engine",
+    t:"面向生产 LLM / RAG / Agent 的公式速查，覆盖注意力变体、位置编码、训练损失等公式族。",
+    n:"创建当日即完成推送，广度优先、深度有限，建议只当公式索引使用。" },
+
+  { id:"Shiva108/ai-llm-red-team-handbook", f:"Shiva108/ai-llm-red-team-handbook", s:349, d:"2026-11-22", l:"CC BY-SA 4.0", st:"active", band:"security",
+    t:"AI / LLM 红队实战手册：46 章课程 + 现场手册 + Python 测试框架，覆盖提示注入、Agent 威胁与 AI 合规。", n:"" },
+  { id:"mouteee/autonomous-offensive-llm-handbook", f:"mouteee/autonomous-offensive-llm-handbook", s:78, d:"2026-09-24", l:"NOASSERTION", st:"active", band:"security",
+    t:"用有明确边界的步骤构建自主安全 Agent，带可运行课程、图示与证据链。", n:"" },
+
+  { id:"Xbotics-Embodied-AI-club/Xbotics-Embodied-AI-Handbook", f:"Xbotics-Embodied-AI-club/Xbotics-Embodied-AI-Handbook", s:93, d:"2026-10-21", l:"MIT", st:"active", band:"embodied",
+    t:"具身智能 21 讲：Agent、VLN、世界模型，真机优先、仿真兜底。", n:"" },
+  { id:"zc-xzc/embodied-ai-learning-handbook", f:"zc-xzc/embodied-ai-learning-handbook", s:73, d:"2026-08-15", l:"NOASSERTION", st:"active", band:"embodied",
+    t:"具身智能学习手册：VLA 模型、遥操作、Sim2Real 与强化学习的系统路径。", n:"" },
+  { id:"wananing/voice-agent-handbook", f:"wananing/voice-agent-handbook", s:24, d:"2026-10-23", l:"CC BY 4.0", st:"active", band:"embodied",
+    t:"实时语音 Agent 架构手册：四种链路形态、七个机制、28 个开源项目的实现对照与选型决策树。", n:"" },
+
+  { id:"Skyfacon/ai-interview-handbook-cn", f:"Skyfacon/ai-interview-handbook-cn", s:111, d:"2026-08-13", l:"—", st:"slow", band:"career",
+    t:"中文大模型面试手册：144 问 + 编程题导航 + Python 手撕代码模板。", n:"" },
+  { id:"harrisliangsu/ai-agent-engineer-handbook", f:"harrisliangsu/ai-agent-engineer-handbook", s:82, d:"2026-10-29", l:"MIT", st:"active", band:"career",
+    t:"中英双语的 AI Agent / LLM 应用工程师面试与学习手册。", n:"" },
+  { id:"bicced/ai-engineer-interview-handbook", f:"bicced/ai-engineer-interview-handbook", s:33, d:"2026-11-03", l:"CC BY 4.0", st:"active", band:"career",
+    t:"AI Engineer 与 FDE 面试手册：113 页 PDF，覆盖 LLM、RAG、Evals、系统设计与各公司面试流程。", n:"" }
+];
+
+const ROUTES = [
+  { id:"start", name:"系统入门", ids:["huggingface/llm_training_handbook","undefined-ui/second-brain-os","handbook-academy/engineering-handbook","DataExpert-io/ai-engineer-handbook","aliyun/ai-agent-handbook","nageoffer/ai-handbook","genai-handbook/genai-handbook.github.io"] },
+  { id:"agent", name:"上手 Agent", ids:["aliyun/ai-agent-handbook","Prompthon-IO/agent-systems-handbook","keyuchen21/agentic-engineering-handbook","oxbshw/LLM-Agents-Ecosystem-Handbook","Xwh630/ai-agent-handbook","vasilyevdm/ai-agent-handbook","undefined-ui/second-brain-os"] },
+  { id:"infra", name:"啃推理与 Infra", ids:["modular/llm-inference-handbook","Allen-C-Guan/AI-Infra-Handbook","sunxiaohui2025/AI-Infra-Handbook","shtjww/llm-inference-capacity-handbook","TensorTonic/llm-optimization-handbook","h9-tec/LLM-Math-Handbook"] },
+  { id:"safe", name:"安全与红队", ids:["Shiva108/ai-llm-red-team-handbook","mouteee/autonomous-offensive-llm-handbook"] },
+  { id:"career", name:"求职准备", ids:["Skyfacon/ai-interview-handbook-cn","harrisliangsu/ai-agent-engineer-handbook","bicced/ai-engineer-interview-handbook"] }
+];
+
+const STATUS_TEXT = { active:"维护中", slow:"更新放缓", stale:"已停更", caution:"谨慎参考" };
+const byId = Object.fromEntries(REPOS.map(r => [r.id, r]));
+let selected = null;
+let activeRoute = null;
+
+/* ---------- stats ---------- */
+(function renderStats(){
+  const total = REPOS.reduce((a,r)=>a+r.s,0);
+  const official = REPOS.filter(r=>r.band==="official").length;
+  const active = REPOS.filter(r=>r.st==="active").length;
+  const items = [
+    { k:"Repositories", v:REPOS.length, s:"个仓库" },
+    { k:"Total Stars", v:(total/1000).toFixed(1)+"k", s:"合计" },
+    { k:"Official", v:official, s:"官方 / 机构" },
+    { k:"Maintained", v:active, s:"仍在更新" }
+  ];
+  document.getElementById("stats").innerHTML = items.map(i=>
+    `<div class="stat"><div class="k">${i.k}</div><div class="v">${i.v}<small>${i.s}</small></div></div>`
+  ).join("");
+})();
+
+/* ---------- routes ---------- */
+(function renderRoutes(){
+  const host = document.getElementById("routes");
+  ROUTES.forEach(r=>{
+    const b = document.createElement("button");
+    b.className="chip"; b.type="button"; b.textContent=r.name;
+    b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",()=>{
+      activeRoute = (activeRoute===r.id) ? null : r.id;
+      host.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed","false"));
+      if(activeRoute) b.setAttribute("aria-pressed","true");
+      applyFilters();
+    });
+    host.appendChild(b);
+  });
+})();
+
+/* ---------- map ---------- */
+(function renderMap(){
+  const map = document.getElementById("map");
+  BANDS.forEach(band=>{
+    const list = REPOS.filter(r=>r.band===band.id);
+    const sec = document.createElement("section");
+    sec.className="band"; sec.dataset.band = band.id;
+    sec.innerHTML = `
+      <div class="band-rail">
+        <div class="band-no">${band.no}</div>
+        <div class="band-title">${band.title}</div>
+        <div class="band-desc">${band.desc}</div>
+        <span class="band-count">${list.length} REPOS</span>
+      </div>
+      <div class="nodes"></div>`;
+    const host = sec.querySelector(".nodes");
+    list.forEach((r,i)=>{
+      const b = document.createElement("button");
+      b.className="node"; b.type="button"; b.dataset.id=r.id;
+      b.setAttribute("aria-current","false");
+      b.innerHTML = `
+        <div class="row1">
+          <span class="idx">${String(REPOS.indexOf(r)+1).padStart(2,"0")}</span>
+          <span class="name" title="${r.f}">${r.f.split("/")[1]}</span>
+          ${band.official?'<span class="badge official">official</span>':""}
+        </div>
+        <div class="meta">
+          <span class="dot ${r.st}" title="${STATUS_TEXT[r.st]}"></span>
+          <span class="stars">★ ${r.s.toLocaleString("en-US")}</span>
+          <span>${r.d.slice(0,7)}</span>
+        </div>`;
+      b.addEventListener("click",()=>select(r.id));
+      host.appendChild(b);
+    });
+    map.appendChild(sec);
+  });
+})();
+
+/* ---------- select ---------- */
+function select(id){
+  selected = id;
+  const r = byId[id];
+  document.querySelectorAll(".node").forEach(n=>n.setAttribute("aria-current", n.dataset.id===id ? "true":"false"));
+  document.getElementById("card-kicker").textContent = "Selected repository";
+  document.getElementById("card-title").textContent = r.f.split("/")[1];
+  document.getElementById("card-owner").textContent = r.f.split("/")[0] + " / " + (r.band==="official"?"official":"community");
+  const kv = document.getElementById("card-kv");
+  kv.style.display="grid";
+  kv.innerHTML = `
+    <dt>Stars</dt><dd>★ ${r.s.toLocaleString("en-US")}</dd>
+    <dt>最近推送</dt><dd>${r.d}</dd>
+    <dt>License</dt><dd>${r.l}</dd>
+    <dt>状态</dt><dd><span class="dot ${r.st}" style="margin-right:6px"></span>${STATUS_TEXT[r.st]}</dd>`;
+  document.getElementById("card-tagline").textContent = r.t;
+  const note = document.getElementById("card-note");
+  if(r.n){ note.textContent = "提示：" + r.n; note.classList.remove("hidden"); }
+  else { note.classList.add("hidden"); }
+  const foot = document.getElementById("card-foot");
+  foot.style.display="flex";
+  const link = document.getElementById("card-link");
+  link.href = "https://github.com/" + r.f;
+  const copy = document.getElementById("card-copy");
+  copy.textContent = "复制全名";
+  copy.onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(r.f); copy.textContent="已复制"; }
+    catch(e){ copy.textContent = "复制失败"; }
+    setTimeout(()=>{ copy.textContent="复制全名"; },1400);
+  };
+}
+
+/* ---------- filters ---------- */
+const q = document.getElementById("q");
+q.addEventListener("input", applyFilters);
+document.addEventListener("keydown", e=>{
+  if(e.key === "/" && document.activeElement !== q){ e.preventDefault(); q.focus(); }
+  if(e.key === "Escape"){ q.value=""; applyFilters(); }
+});
+
+function applyFilters(){
+  const term = q.value.trim().toLowerCase();
+  const route = activeRoute ? ROUTES.find(x=>x.id===activeRoute) : null;
+  REPOS.forEach(r=>{
+    const el = document.querySelector(`.node[data-id="${CSS.escape(r.id)}"]`);
+    if(!el) return;
+    const text = (r.f + " " + r.t + " " + r.band).toLowerCase();
+    let show = true;
+    if(term) show = text.includes(term);
+    if(show && route) show = route.ids.includes(r.id);
+    el.classList.toggle("dim", !show);
+    el.classList.toggle("route-on", !!route && route.ids.includes(r.id) && !term);
+  });
+  document.querySelectorAll(".band").forEach(b=>{
+    const anyVisible = [...b.querySelectorAll(".node")].some(n=>!n.classList.contains("dim"));
+    b.style.display = anyVisible ? "" : "none";
+  });
+}
+
+/* default selection: the headline official repo */
+select("aliyun/ai-agent-handbook");
+</script>
+</body>
+</html>
